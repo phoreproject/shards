@@ -37,5 +37,6 @@ To import functions from the Phore package, add this to the top of any shard cod
 extern {
     pub fn load(a: i64) -> i64;
     pub fn store(a: i64, val: i64);
+    pub fn validateECDSA(hashAddr: &[u8; 32], signatureAddr: &[u8; 65], out: &mut[u8; 33]) -> i64;
 }
 ```

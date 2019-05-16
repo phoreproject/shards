@@ -13,13 +13,19 @@ extern {
     pub fn load(a: i64) -> i64;
     pub fn store(a: i64, val: i64);
     pub fn validateECDSA(hashAddr: &[u8; 32], signatureAddr: &[u8; 65], out: &mut[u8; 33]) -> i64;
+    pub fn hash(data: *const u8, length: usize) -> [u8; 32];
 }
 
 #[no_mangle]
 pub unsafe extern fn run() {
-    let mut pubkey1 = PUBKEY;
     let mut pubkey = PUBKEY;
     let out = validateECDSA(HASH, SIGNATURE, &mut pubkey);
+
+    let to_hash = vec![1u8, 2, 3, 4];
+
+    let hashed = hash(to_hash.as_ptr(), to_hash.len());
+
+    store(1, hashed[0] as i64);
 
     if pubkey.iter().eq(PUBKEY.iter()) && out == 1 {
         store(0, 1);

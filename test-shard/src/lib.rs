@@ -1,4 +1,3 @@
-
 #[link(wasm_import_module = "phore")]
 extern {
     pub fn load(a: i64) -> i64;

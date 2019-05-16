@@ -1,0 +1,15 @@
+[package]
+name = "test-ecdsa-shard"
+version = "0.1.0"
+authors = ["Julian Meyer <julianmeyer2000@gmail.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+lto = true
+opt-level = 's'
+
+[dependencies]
+hex-literal = "0.2.0"

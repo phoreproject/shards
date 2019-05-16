@@ -7,7 +7,7 @@ This repository will hold code for all of the shard types Phore develops.
 Go into one of the shard directories and run:
 
 ```bash
-cargo build
+cargo build --target wasm32-unknown-unknown
 ```
 
 The result will be in: `target/debug/*_shard.wasm`.
@@ -17,7 +17,7 @@ The result will be in: `target/debug/*_shard.wasm`.
 For release, we optimize the wasm file for size by running:
 
 ```bash
-cargo build --release
+cargo build --release --target wasm32-unknown-unknown
 ```
 
 The result will be in: `target/release/*_shard.wasm`.

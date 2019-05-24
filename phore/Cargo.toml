@@ -1,15 +1,12 @@
 [package]
-name = "transfer-shard"
+name = "phore"
 version = "0.1.0"
 authors = ["Julian Meyer <julianmeyer2000@gmail.com>"]
 edition = "2018"
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["rlib"]
 
 [profile.release]
 lto = true
 opt-level = 's'
-
-[dependencies]
-phore = { path = "../phore" }

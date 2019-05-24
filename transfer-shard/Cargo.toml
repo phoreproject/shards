@@ -1,5 +1,5 @@
 [package]
-name = "test-shard"
+name = "transfer-shard"
 version = "0.1.0"
 authors = ["Julian Meyer <julianmeyer2000@gmail.com>"]
 edition = "2018"
@@ -11,5 +11,5 @@ crate-type = ["cdylib"]
 lto = true
 opt-level = 's'
 
-[build]
-target = "wasm32-unknown-unknown"
+[dependencies]
+hex-literal = "0.2.0"

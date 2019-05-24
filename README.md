@@ -33,11 +33,15 @@ wasm-strip target/wasm32-unknown-unknown/release/*_shard.wasm
 To import functions from the Phore package, add this to the top of any shard code:
 
 ```rust
+use std::ffi;
+
 #[link(wasm_import_module = "phore")]
 extern {
-    pub fn load(a: i64) -> i64;
-    pub fn store(a: i64, val: i64);
+    pub fn load(addr: &[u8; 32]) -> [u8; 32];
+    pub fn store(addr: &[u8; 32], val: &[u8; 32]);
     pub fn validateECDSA(hashAddr: &[u8; 32], signatureAddr: &[u8; 65], out: &mut[u8; 33]) -> i64;
     pub fn hash(data: *const u8, length: usize) -> [u8; 32];
+    pub fn loadArgument(arg_num: i32, out: *mut ffi::c_void);
+    pub fn write_log(msg: *const u8, length: usize);
 }
 ```

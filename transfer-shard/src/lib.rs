@@ -1,6 +1,10 @@
-extern crate phore;
+#[macro_use]
+extern crate lazy_static;
 
-use std::fmt::Write;
+#[macro_use]
+extern crate hex_literal;
+
+extern crate phore;
 
 use phore::load_argument;
 use phore::hash_bytes;
@@ -9,6 +13,50 @@ use phore::hash_to_num;
 use phore::num_to_hash;
 use phore::load_from_storage;
 use phore::save_to_storage;
+
+use std::collections::HashMap;
+
+use std::fmt::Write;
+
+lazy_static!{
+    static ref PREMINE: HashMap<[u8; 32], u64> = [
+        (hex!("1fd93f10d5a9a8838b60cb0975504eeead3e65d073df53ff138308cccc4069e9"), 100000000),
+    ].iter().copied().collect();
+}
+
+#[no_mangle]
+pub extern fn redeem_premine() -> u64 {
+    let mut to_pubkey_hash: [u8; 32] = [0; 32];
+    to_pubkey_hash.copy_from_slice(&load_argument(0, 32));
+
+    if !PREMINE.contains_key(&to_pubkey_hash) {
+        return 1;
+    }
+
+    let mut redemption_message = String::from("redeem ");
+
+    for &byte in to_pubkey_hash.iter() {
+        redemption_message.push_str(&format!("{:02x}", byte));
+    }
+
+    let message_hash = hash_bytes(redemption_message.as_bytes());
+
+    let redemption_status = hash_to_num(load_from_storage(message_hash));
+
+    if redemption_status != 0 {
+        return 2;
+    }
+
+    let old_balance = hash_to_num(load_from_storage(to_pubkey_hash));
+
+    let redemption_amount = PREMINE.get(&to_pubkey_hash).unwrap();
+
+    save_to_storage(to_pubkey_hash, num_to_hash(old_balance + redemption_amount));
+
+    save_to_storage(message_hash, num_to_hash(1));
+
+    return 0;
+}
 
 #[no_mangle]
 pub extern fn transfer_to_address() -> u64 {

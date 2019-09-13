@@ -10,3 +10,6 @@ crate-type = ["rlib"]
 [profile.release]
 lto = true
 opt-level = 's'
+
+[dependencies]
+wee_alloc = { version = "0.4.4", default-features = false }
